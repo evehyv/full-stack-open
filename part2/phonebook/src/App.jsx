@@ -49,14 +49,18 @@ const App = () => {
     } else {
       const personObject = { 
         name: newName,
-        number: newNumber,
-        id: persons.length + 1
+        number: newNumber
       }
-      const updatedPersons = persons.concat(personObject)
-      updatePersonsList(updatedPersons)
-      setPersons(updatedPersons)
-      setNewName('')
-      setNewNumber('')
+
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          const updatedPersons = persons.concat(response.data)
+          updatePersonsList(updatedPersons)
+          setPersons(updatedPersons)
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
 
