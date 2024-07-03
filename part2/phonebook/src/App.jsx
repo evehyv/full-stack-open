@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonsForm from './components/PersonsForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,6 +11,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
   const [personsList, setPersonsList] = useState([])
+  const [message, setMessage] = useState(null)
+  const [messageColor, setMessageColor] = useState('green')
 
   useEffect(() => {
     personService
@@ -54,6 +57,13 @@ const App = () => {
         personService
           .update(person.id, changedPerson)
           .then(response => {
+            setMessageColor('green')
+            setMessage(
+              `Updated the number for ${newName}`
+            )
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
             const updatedPersons = persons.map(person => person.id !== changedPerson.id ? person : response.data)
             updatePersonsList(updatedPersons)
             setPersons(updatedPersons)
@@ -70,6 +80,13 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
+          setMessageColor('green')
+          setMessage(
+            `Added ${newName}`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           const updatedPersons = persons.concat(response.data)
           updatePersonsList(updatedPersons)
           setPersons(updatedPersons)
@@ -95,6 +112,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={message} color={messageColor} />
       <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonsForm
