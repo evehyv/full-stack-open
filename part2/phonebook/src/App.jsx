@@ -70,6 +70,24 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(error => {
+            setMessageColor('red')
+
+            if (error.response.status === 404) {
+              setMessage(
+                `Information of ${newName} has already been removed from server`
+              )
+              const updatedPersons = persons.filter(person => person.id !== changedPerson.id)
+              updatePersonsList(updatedPersons)
+              setPersons(updatedPersons)
+            } else {
+              setMessage('Oops... Looks like something went wrong.')
+            }
+            
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
+          })
       }
     } else {
       const personObject = { 
