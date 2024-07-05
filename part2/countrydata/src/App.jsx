@@ -38,7 +38,12 @@ const App = () => {
     <>
       <div>Find countries: <input value={filter} onChange={handleFilterChange} /></div>
       {filter && filteredCountries.length > 10 && <div>Too many matches, specify another filter</div>}
-      {filter && filteredCountries.length < 10 && filteredCountries.length > 1 && filteredCountries.map(country => <div key={country.name.common}>{country.name.common}</div>)}
+      {filter && filteredCountries.length < 10 && filteredCountries.length > 1 && filteredCountries.map(country => 
+          <div key={country.name.common}>
+            {country.name.common} <button onClick={() => setCountry(country)}>Show</button>
+          </div>
+        )
+      }
       {country && <Country country={country} />}
     </>
   )
